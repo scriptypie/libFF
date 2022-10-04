@@ -13,7 +13,12 @@
 #include <string>
 
 static const version_t g_magic = { 25, 04 };
-static const version_t g_version = { 0, 1 };
+static const version_t g_version = { 0, 2 };
 
+static const size_t SEARCHLEN = 12;
+static const size_t BLOCKSIZE = 65536;
+static const size_t SHORTRUN_BITS = 3;
+static const size_t SHORTRUN_MAX = (1 << SHORTRUN_BITS);
+static const size_t MIN_RUN = 5;
 
 #endif

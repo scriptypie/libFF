@@ -10,6 +10,7 @@
 #define ff__generic_reader_hpp
 
 #include "header.hpp"
+#include "../compression/compression.hpp"
 
 class ffGenericReader
 {
@@ -36,13 +37,14 @@ public:
         if (!f.is_open()) return false;
         return true;
     }
-    const char* read()
+    const std::string read()
     {
         char* data = (char*)malloc(header.size);
-        if (!data) return nullptr;
-        //f.seekg(sizeof(ffGenericHeader), std::ios::beg);
+        if (!data) return "";
         f.read(data, header.size);
-        return data;
+        std::string tmp(std::move(data), header.size);
+        decompressor::process(tmp, header);
+        return tmp;
     }
 };
 

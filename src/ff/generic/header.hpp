@@ -19,8 +19,10 @@ struct ffGenericHeader
     version_t magic; 
     // version of header. reader version must be equal or higher
     version_t version; 
-    // size of file, excluding header
+    // size of file, excluding header, arter compression
     uint64_t size; 
+    // size of file, excluding header, before compression
+    uint64_t originalSize; 
     uint64_t compression;
 };
 
@@ -30,7 +32,9 @@ std::ostream& operator<<(std::ostream& os, const ffGenericHeader& header)
     << "Header structure:\n"
     << "Magic: (" << header.magic.highPart << "" << header.magic.lowPart << ")\n"
     << "Version: (" << header.version.highPart << "." << header.version.lowPart << ")\n"
-    << "Data size: " << header.size;
+    << "Original data size: " << header.originalSize << std::endl
+    << "Data size: " << header.size << std::endl
+    << "Compression: " << header.compression;
 }
 
 
