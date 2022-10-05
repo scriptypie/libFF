@@ -11,6 +11,7 @@
 
 #include "header.hpp"
 #include "../compression/compression.hpp"
+#include "../encoding/encoding.hpp"
 
 class ffGenericReader
 {
@@ -43,7 +44,8 @@ public:
         if (!data) return "";
         f.read(data, header.size);
         std::string tmp(std::move(data), header.size);
-        decompressor::process(tmp, header);
+        decompressor::process(tmp, header.compression, header.originalSize);
+        decoder::process(tmp, header.encoding);
         return tmp;
     }
 };

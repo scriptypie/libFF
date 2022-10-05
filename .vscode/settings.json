@@ -68,6 +68,7 @@
         "algorithm": "cpp",
         "queue": "cpp",
         "filesystem": "cpp",
-        "lz4.h": "c"
+        "lz4.h": "c",
+        "*.tt": "cpp"
     }
 }

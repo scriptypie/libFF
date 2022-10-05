@@ -7,8 +7,8 @@ extern "C" {
 // Simple Functions
 //****************************
 
-int LZ4_compress   (char* source, char* dest, int isize);
-int LZ4_uncompress (char* source, char* dest, int osize);
+size_t LZ4_compress   (char* source, char* dest, size_t isize);
+size_t LZ4_uncompress (char* source, char* dest, size_t osize);
 
 /*
 LZ4_compress :
@@ -29,7 +29,7 @@ LZ4_uncompress :
 // Advanced Functions
 //****************************
 
-int LZ4_uncompress_unknownOutputSize (char* source, char* dest, int isize, int maxOutputSize);
+size_t LZ4_uncompress_unknownOutputSize (char* source, char* dest, size_t isize, size_t maxOutputSize);
 
 /*
 LZ4_uncompress_unknownOutputSize :
@@ -42,7 +42,7 @@ LZ4_uncompress_unknownOutputSize :
 */
 
 
-int LZ4_compressCtx(void** ctx, char* source,  char* dest, int isize);
+size_t LZ4_compressCtx(void** ctx, char* source,  char* dest, size_t isize);
 
 /*
 LZ4_compressCtx :
@@ -59,7 +59,7 @@ LZ4_compressCtx :
 // Deprecated decoding function
 //*********************************
 
-int LZ4_decode (char* source, char* dest, int isize);
+size_t LZ4_decode (char* source, char* dest, size_t isize);
 
 /*
 LZ4_decode : This version is faster, but deprecated

@@ -40,6 +40,11 @@ bool operator<(const version_t& a, const version_t& b)
     return (a.highPart + a.lowPart) < (b.highPart + b.lowPart);
 }
 
+bool operator<=(const version_t& a, const version_t& b)
+{
+    return (a.highPart + a.lowPart) <= (b.highPart + b.lowPart);
+}
+
 bool operator>(const version_t& a, const version_t& b)
 {
     return (a.highPart + a.lowPart) > (b.highPart + b.lowPart);

@@ -16,7 +16,7 @@
 // It may also improve speed, especially if you reach L1 cache size (32KB for Intel, 64KB for AMD)
 // Expanding memory usage typically improves compression ratio
 // Memory usage formula : N->2^(N+2) Bytes (examples : 17 -> 512KB ; 12 -> 16KB)
-#define HASH_LOG 12
+#define HASH_LOG 13
 
 
 //**************************************
@@ -75,12 +75,12 @@ struct refTables
 // Compression CODE
 //****************************
 
-int LZ4_compress(char* source, 
+size_t LZ4_compress(char* source, 
 				 char* dest,
-				 int isize)
+				 size_t isize)
 {
 	void* ctx = malloc(sizeof(struct refTables));
-	int result = LZ4_compressCtx(&ctx, source, dest, isize);
+	size_t result = LZ4_compressCtx(&ctx, source, dest, isize);
 	free(ctx);
 
 	return result;
@@ -88,10 +88,10 @@ int LZ4_compress(char* source,
 
 
 
-int LZ4_compressCtx(void** ctx,
+size_t LZ4_compressCtx(void** ctx,
 				 char* source, 
 				 char* dest,
-				 int isize)
+				 size_t isize)
 {	
 	struct refTables *srt = (struct refTables *) (*ctx);
 	BYTE**  HashTable;
@@ -106,7 +106,7 @@ int LZ4_compressCtx(void** ctx,
 			*ref,
 			*orun, *l_end;
 	
-	int		len, length;
+	size_t		len, length;
 	U32		step=1;
 
 
@@ -195,9 +195,9 @@ _endCount:
 //****************************
 // Decompression CODE
 //****************************
-int LZ4_uncompress(char* source, 
+size_t LZ4_uncompress(char* source, 
 				 char* dest,
-				 int osize)
+				 size_t osize)
 {	
 	// Local Variables
 	BYTE	*ip = (BYTE*) source;
@@ -208,7 +208,7 @@ int LZ4_uncompress(char* source,
 			runcode;
 	
 	U32		dec[4]={0, 3, 2, 3};
-	int		length;
+	size_t		length;
 
 
 	// Main Loop
@@ -260,19 +260,19 @@ int LZ4_uncompress(char* source,
 	}
 
 	// end of decoding
-	return (int) (((char*)ip)-source);
+	return (size_t) (((char*)ip)-source);
 
 	// write overflow error detected
 _output_error:
-	return (int) (-(((char*)ip)-source));
+	return (size_t) (-(((char*)ip)-source));
 }
 
 
-int LZ4_uncompress_unknownOutputSize(
+size_t LZ4_uncompress_unknownOutputSize(
 				char* source, 
 				char* dest,
-				int isize,
-				int maxOutputSize)
+				size_t isize,
+				size_t maxOutputSize)
 {	
 	// Local Variables
 	BYTE	*ip = (BYTE*) source,
@@ -284,7 +284,7 @@ int LZ4_uncompress_unknownOutputSize(
 			runcode;
 	
 	U32		dec[4]={0, 3, 2, 3};
-	int		len, length;
+	size_t		len, length;
 
 
 	// Main Loop
@@ -337,20 +337,20 @@ int LZ4_uncompress_unknownOutputSize(
 	}
 
 	// end of decoding
-	return (int) (((char*)op)-dest);
+	return (size_t) (((char*)op)-dest);
 
 	// write overflow error detected
 _output_error:
-	return (int) (-(((char*)ip)-source));
+	return (size_t) (-(((char*)ip)-source));
 }
 
 
 //****************************
 // Deprecated functions
 //****************************
-int LZ4_decode ( char* source, 
+size_t LZ4_decode ( char* source, 
 				 char* dest,
-				 int isize)
+				 size_t isize)
 {	
 	// Local Variables
 	BYTE	*ip = (BYTE*)source,      
@@ -361,7 +361,7 @@ int LZ4_decode ( char* source,
 			runcode;
 	
 	U32		dec[4]={0, 3, 2, 3};
-	int		len, length;
+	size_t		len, length;
 
 
 	// Main Loop
@@ -399,5 +399,5 @@ int LZ4_decode ( char* source,
 	}
 
 	// end of decoding
-	return (int) (((char*)op)-dest);
+	return (size_t) (((char*)op)-dest);
 }

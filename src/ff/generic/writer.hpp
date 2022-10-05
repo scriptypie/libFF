@@ -11,6 +11,7 @@
 
 #include "header.hpp"
 #include "../compression/compression.hpp"
+#include "../encoding/encoding.hpp"
 
 class ffGenericWriter
 {
@@ -18,12 +19,12 @@ public:
     ffGenericWriter() {}
     ~ffGenericWriter() {}
 
-    void write(const std::string& filename, const std::string& str, ffCompressionAlgorithm comp = NoCompression)
+    void write(const std::string& filename, const std::string& str, ffCompressionAlgorithm comp = ffCompressionAlgorithmNoCompression, ffEncodingAlgorithm enc = ffEncodingAlgorithmRev8)
     {  
-        write(filename, str.data(), str.size(), comp);
+        write(filename, str.data(), str.size(), comp, enc);
     }
 
-    void write(const std::string& filename, const char* data, const uint64_t& size, ffCompressionAlgorithm comp = NoCompression)
+    void write(const std::string& filename, const char* data, const uint64_t& size, ffCompressionAlgorithm comp = ffCompressionAlgorithmNoCompression, ffEncodingAlgorithm enc = ffEncodingAlgorithmRev8)
     {
         std::ofstream f(filename, std::ios::binary);
         if (f.is_open())
@@ -33,10 +34,11 @@ public:
             header.version = g_version;
             header.originalSize = size;
             header.compression = comp;
+            header.encoding = enc;
             std::string tmp(data, size);
+            encoder::process(tmp, enc);
             compressor::process(tmp, comp);
             header.size = tmp.size();
-            size_t s = sizeof(header) + header.size;
             f.write((const char*)&header, sizeof(ffGenericHeader));
             f.write(tmp.data(), header.size);
             f.close();

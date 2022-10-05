@@ -11,6 +11,9 @@
 
 #include "../common/config.hpp"
 
+#include "../encoding/encoding.hpp"
+#include "../compression/compression.hpp"
+
 #include <fstream>
 
 struct ffGenericHeader
@@ -23,7 +26,10 @@ struct ffGenericHeader
     uint64_t size; 
     // size of file, excluding header, before compression
     uint64_t originalSize; 
-    uint64_t compression;
+    // compression type of data
+    uint32_t compression;
+    // compression type of data
+    uint32_t encoding;
 };
 
 std::ostream& operator<<(std::ostream& os, const ffGenericHeader& header)
@@ -34,7 +40,8 @@ std::ostream& operator<<(std::ostream& os, const ffGenericHeader& header)
     << "Version: (" << header.version.highPart << "." << header.version.lowPart << ")\n"
     << "Original data size: " << header.originalSize << std::endl
     << "Data size: " << header.size << std::endl
-    << "Compression: " << header.compression;
+    << "Compression: " << (ffCompressionAlgorithm)(header.compression) << std::endl
+    << "Encoding: " << (ffEncodingAlgorithm)(header.encoding);
 }
 
 

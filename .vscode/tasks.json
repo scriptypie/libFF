@@ -9,6 +9,8 @@
                 "-fansi-escape-codes",
                 "-g",
                 "${workspaceFolder}/src/lz4.cpp",
+                "${workspaceFolder}/src/base64encode.cpp",
+                "${workspaceFolder}/src/base64decode.cpp",
                 "${file}",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
